@@ -14,9 +14,9 @@ int on_board_led_pin = 13;
 int led_state = LOW;
 
 /* RGB LED pins */
-int led_pin_red = 37;
-int led_pin_green = 36;
-int led_pin_blue = 38;
+#define LED_PIN_RED 37
+#define LED_PIN_GREEN 36
+#define LED_PIN_BLUE 38
 
 /* TX2's IP address. Receiving from CAN */
 unsigned short ip_addr[4] = {0,0,0,0};
@@ -76,9 +76,9 @@ void loop() {
 }
 
 void set_rgb_led(int red, int green, int blue) {
-  analogWrite(led_pin_red, red);
-  analogWrite(led_pin_green, green);
-  analogWrite(led_pin_blue, blue);  
+  analogWrite(LED_PIN_RED, red);
+  analogWrite(LED_PIN_GREEN, green);
+  analogWrite(LED_PIN_BLUE, blue);  
 }
 
 void setup() {
@@ -87,11 +87,16 @@ void setup() {
   // 1. Set the PWM resolution to 16 bits
   // 2. Set the PWM frequency of the RGB LED pins to 100 Hz
   //-----------------
+  analogWriteResolution(16);
+  analogWriteFrequency(LED_PIN_RED, 100);
+  analogWriteFrequency(LED_PIN_GREEN, 100);
+  analogWriteFrequency(LED_PIN_BLUE, 100);
   
+
    
-  pinMode(led_pin_red, OUTPUT);
-  pinMode(led_pin_green, OUTPUT);
-  pinMode(led_pin_blue, OUTPUT);  
+  pinMode(LED_PIN_RED, OUTPUT);
+  pinMode(LED_PIN_GREEN, OUTPUT);
+  pinMode(LED_PIN_BLUE, OUTPUT);  
 
   set_rgb_led(65535, 0, 0); //Full Red
 
