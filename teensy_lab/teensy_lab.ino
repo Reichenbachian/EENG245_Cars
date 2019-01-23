@@ -34,6 +34,9 @@ void blink_LED() {
   //-----------------
   // Your code: Toggle the on-board LED. Use 'digitalWrite' function 
   //-----------------
+  if (led_state == LOW) led_state = HIGH;
+  else led_state = LOW;
+  digitalWrite(on_board_led_pin, led_state);
 }
 
 
@@ -45,6 +48,11 @@ void CAN_check() {
     // Store the IP address of TX2 to the global variable 'ip_addr'.
     // The CAN identifier for the IP message is 0x2
     //-----------------
+    Can0.read(rx_msg);
+    if (rx_msg.id = 0x2) {
+      for (int i = 0; i < 4; i++)
+        ip_addr[i] = rx_msg.buf[i];
+    }
   }
 }
 
@@ -102,8 +110,12 @@ void setup() {
   //-----------------
   // Your code: make 'CAN_check' periodic (priority = 1) 
   //----------------- 
-  
+  myTimer_CAN_check.priority(1);
+  myTimer_CAN_check.begin(CAN_check, CAN_check_period);
+
   //-----------------
   // Your code: make 'blink_LED' periodic (priority = 200) 
   //----------------- 
+  myTimer_blink_led.priority(200);
+  myTimer_blink_led.begin(blink_LED, blinking_period);
 }
